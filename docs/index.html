@@ -1,10 +1,598 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Панфилова Анна · Python портфолио</title>
+    <!-- Шрифты: Inter + JetBrains Mono для тех-стиля -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ----- СБРОС, ПЕРЕМЕННЫЕ, БАЗА ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #0b1c2f;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+
+        .portfolio {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+            padding: 2.8rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* декоративный акцент — питоновский змейка */
+        .portfolio::before {
+            content: "🐍";
+            position: absolute;
+            font-size: 16rem;
+            opacity: 0.02;
+            bottom: -2rem;
+            right: -2rem;
+            transform: rotate(-8deg);
+            font-family: 'JetBrains Mono', monospace;
+            pointer-events: none;
+        }
+
+        /* типографика */
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h2 i {
+            color: #306998;
+            font-size: 1.6rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            border-left: 5px solid #ffd43b;
+            padding-left: 1.1rem;
+            background: #fef9e7;
+            border-radius: 0 12px 12px 0;
+            padding: 0.8rem 1.3rem;
+        }
+
+        /* карточки и сетки */
+        .grid-2, .grid-3 {
+            display: grid;
+            gap: 1.8rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        /* header — профиль */
+        .profile {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+        }
+
+        .profile-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .group-badge {
+            display: inline-block;
+            background: linear-gradient(145deg, #1e415e, #2a5c7a);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.35rem 1.2rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+            margin-bottom: 1rem;
+            align-self: flex-start;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 10px rgba(0,80,100,0.2);
+        }
+
+        .group-badge i {
+            margin-right: 0.4rem;
+        }
+
+        .avatar-icon {
+            background: #ffd343;
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 10px 20px -10px rgba(255, 212, 59, 0.4);
+        }
+
+        /* контакты быстрые */
+        .contact-strip {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin: 1.6rem 0 1rem;
+            background: #f1f5f9;
+            padding: 1rem 1.8rem;
+            border-radius: 60px;
+            align-items: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.98rem;
+            font-weight: 500;
+            color: #0f2b3c;
+            background: white;
+            padding: 0.3rem 1rem 0.3rem 0.8rem;
+            border-radius: 50px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .contact-item i {
+            background: #306998;
+            color: white;
+            padding: 0.4rem;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pill {
+            background: #e9f0f5;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1f4a64;
+        }
+
+        /* секции */
+        .section {
+            margin-top: 3.2rem;
+        }
+
+        .skill-tag {
+            background: white;
+            border: 1px solid #dde7ed;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #1d3b4e;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .skill-tag i {
+            color: #306998;
+            font-size: 0.8rem;
+        }
+
+        .skill-tag:hover {
+            border-color: #ffd343;
+            background: #fffae6;
+            transform: scale(0.98);
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1.8rem 1.6rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            border: 1px solid #edf2f7;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            border-color: #ffd343;
+            box-shadow: 0 20px 30px -8px rgba(48,105,152,0.08);
+            transform: translateY(-5px);
+        }
+
+        .project-icon {
+            font-size: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-desc {
+            color: #334e68;
+            font-size: 0.96rem;
+            margin-bottom: 1.3rem;
+            flex: 1;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tech-item {
+            background: #f0f4f9;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.8rem;
+            border-radius: 30px;
+            color: #1f4a6e;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        .exp-item {
+            display: flex;
+            gap: 1rem;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.6rem;
+            border: 1px solid #ecf3f7;
+            margin-bottom: 1rem;
+            transition: 0.15s;
+        }
+
+        .exp-item:hover {
+            background: #fbfdff;
+            border-color: #bdd3df;
+        }
+
+        .exp-icon {
+            background: #1e3a4e;
+            color: white;
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .exp-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .exp-meta {
+            color: #527a90;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .edu-badge {
+            background: #0b2a38;
+            color: white;
+            padding: 0.4rem 1.4rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        hr {
+            margin: 2.5rem 0 1rem;
+            border: none;
+            border-top: 2px dashed #cfdfe7;
+            opacity: 0.6;
+        }
+
+        .footer-note {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #306998;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .python-badge {
+            background: linear-gradient(145deg, #ffd343, #ffc61c);
+            border: none;
+            font-weight: 700;
+        }
+
+        /* адаптив */
+        @media (max-width: 900px) {
+            .portfolio { padding: 1.8rem; }
+            h1 { font-size: 2.5rem; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .profile { flex-direction: column; }
+        }
+        @media (max-width: 550px) {
+            .contact-strip { flex-direction: column; align-items: stretch; }
+            .contact-item { width: 100%; }
+        }
+
+        .highlight {
+            background: #fff8e0;
+            border-radius: 16px;
+            padding: 0.2rem 0.4rem;
+            font-weight: 600;
+            color: #284c5e;
+        }
+    </style>
 </head>
 <body>
-<h1>hellow, world</h1>>
+    <div class="portfolio">
+        <!-- ХЕДЕР: АННА ПАНФИЛОВА, ГРУППА R3121 -->
+        <div class="profile">
+            <div class="profile-left">
+                <span class="group-badge">
+                    <i class="fas fa-graduation-cap"></i> ГРУППА R3121
+                </span>
+                <h1>Панфилова Анна</h1>
+                <div style="display: flex; align-items: center; gap: 12px; margin-top: 0.5rem; flex-wrap: wrap;">
+                    <span class="pill" style="background: #306998; color: white;"><i class="fas fa-code"></i> Python-разработчик</span>
+                    <span class="pill" style="background: #f1c40f; color: #1e3f4e;"><i class="fas fa-rocket"></i> 3+ года pet-проектов</span>
+                    <span class="pill"><i class="fas fa-laptop-code"></i> Фулл-стак (питон)</span>
+                </div>
+                <div class="contact-strip">
+                    <span class="contact-item"><i class="fas fa-envelope"></i> a.panfilova@edu.spb.ru</span>
+                    <span class="contact-item"><i class="fas fa-map-marker-alt"></i> Санкт-Петербург / удалённо</span>
+                    <span class="contact-item"><i class="fab fa-github"></i> github.com/annapan-dev</span>
+                    <span class="contact-item"><i class="fab fa-telegram"></i> @annapan_dev</span>
+                </div>
+            </div>
+            <div class="avatar-icon">
+                <i class="fab fa-python"></i>
+            </div>
+        </div>
+
+        <!-- коротко о себе + группа ещё раз подчеркнута -->
+        <div class="tagline">
+            <i class="fas fa-quote-left" style="color: #306998; opacity: 0.7;"></i>
+            Студентка группы <strong>R3121</strong>, специализируюсь на бэкенде и автоматизации. Пишу чистый, типизированный Python. Стремлюсь к промышленной разработке.
+            <i class="fas fa-quote-right" style="color: #306998; opacity: 0.7;"></i>
+        </div>
+
+        <!-- НАВЫКИ / СТЕК -> акцент на Python экосистеме -->
+        <div class="section">
+            <h2><i class="fas fa-cogs" style="color: #ffd343;"></i> Технологический стек</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.7rem;">
+                <span class="skill-tag"><i class="fab fa-python"></i> Python 3.8-3.12</span>
+                <span class="skill-tag"><i class="fas fa-bolt"></i> Django / DRF</span>
+                <span class="skill-tag"><i class="fas fa-leaf"></i> Flask / FastAPI</span>
+                <span class="skill-tag"><i class="fas fa-database"></i> PostgreSQL / SQLAlchemy</span>
+                <span class="skill-tag"><i class="fas fa-cloud"></i> Docker / Docker Compose</span>
+                <span class="skill-tag"><i class="fas fa-code-branch"></i> Git / GitHub Actions</span>
+                <span class="skill-tag"><i class="fas fa-chart-line"></i> Pandas / NumPy</span>
+                <span class="skill-tag"><i class="fas fa-robot"></i> Aiogram / Telegram API</span>
+                <span class="skill-tag"><i class="fas fa-tasks"></i> Poetry / Pytest</span>
+                <span class="skill-tag"><i class="fas fa-shield"></i> SQL / Alembic</span>
+                <span class="skill-tag python-badge"><i class="fab fa-python"></i> asyncio / aiohttp</span>
+            </div>
+        </div>
+
+        <!-- ПРОЕКТЫ (ПОРТФОЛИО) 3 штуки, но можно красиво 3 ячейки -->
+        <div class="section">
+            <h2><i class="fas fa-folder-open"></i> Пет-проекты и разработки</h2>
+            <div class="grid-3">
+                <!-- проект 1 -->
+                <div class="project-card">
+                    <div class="project-icon">📦</div>
+                    <div class="project-title">
+                        <span>WareFlow</span>
+                        <span style="font-size: 0.8rem; background: #dff0fa; padding: 0.2rem 0.6rem; border-radius: 60px;">DRF</span>
+                    </div>
+                    <div class="project-desc">
+                        Система управления складом с ролями, JWT-аутентификацией и отчётами. Бэкенд на Django Rest Framework. Документация Swagger, покрытие тестами >85%.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-item">Django</span>
+                        <span class="tech-item">DRF</span>
+                        <span class="tech-item">PostgreSQL</span>
+                        <span class="tech-item">Redis</span>
+                        <span class="tech-item">JWT</span>
+                    </div>
+                </div>
+                <!-- проект 2 -->
+                <div class="project-card">
+                    <div class="project-icon">🤖</div>
+                    <div class="project-title">
+                        <span>StudyBot</span>
+                        <span style="font-size: 0.8rem; background: #dff0fa; padding: 0.2rem 0.6rem; border-radius: 60px;">Aiogram</span>
+                    </div>
+                    <div class="project-desc">
+                        Telegram-бот для группы R3121: расписание, дедлайны, загрузка материалов. Интеграция с Google Calendar, опросы, напоминания.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-item">aiogram 3.x</span>
+                        <span class="tech-item">asyncpg</span>
+                        <span class="tech-item">PostgreSQL</span>
+                        <span class="tech-item">Docker</span>
+                        <span class="tech-item">APScheduler</span>
+                    </div>
+                </div>
+                <!-- проект 3 -->
+                <div class="project-card">
+                    <div class="project-icon">📊</div>
+                    <div class="project-title">
+                        <span>Analytic API</span>
+                        <span style="font-size: 0.8rem; background: #dff0fa; padding: 0.2rem 0.6rem; border-radius: 60px;">FastAPI</span>
+                    </div>
+                    <div class="project-desc">
+                        Микросервис для обработки логов и метрик. Асинхронный парсинг CSV, агрегация, экспорт в PDF. Развернуто на Railway.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-item">FastAPI</span>
+                        <span class="tech-item">Pandas</span>
+                        <span class="tech-item">Plotly</span>
+                        <span class="tech-item">SQLite</span>
+                        <span class="tech-item">Uvicorn</span>
+                    </div>
+                </div>
+            </div>
+            <!-- дополнительный проект — выделим его как open source -->
+            <div style="margin-top: 1.8rem; background: #f2f7fb; border-radius: 1.8rem; padding: 1.3rem 1.8rem; border-left: 8px solid #ffd343;">
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <i class="fas fa-terminal" style="font-size: 2rem; color: #306998;"></i>
+                    <div>
+                        <span style="font-weight: 800; font-size: 1.2rem;">⚙️ async-python-utils</span>
+                        <span style="background: #1e415e; color: white; padding: 0.2rem 0.9rem; border-radius: 30px; font-size: 0.75rem; margin-left: 0.8rem;">Open Source</span>
+                        <p style="margin-top: 0.3rem; color: #2d4e63;">Библиотека асинхронных обёрток для работы с API и файлами. Более 30 звезд на GitHub, используется 2 контрибьюторами. <span style="background: white; padding: 0.1rem 0.5rem; border-radius: 12px; font-weight: 600; ">#Python3.11</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ОПЫТ И АКАДЕМИЧЕСКАЯ ТРАЕКТОРИЯ + группа R3121 -->
+        <div class="section">
+            <h2><i class="fas fa-user-graduate"></i> Академический и проектный опыт</h2>
+            <!-- образование -->
+            <div class="exp-item">
+                <div class="exp-icon" style="background: #306998;">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="exp-content">
+                    <h3>Университет ИТМО (прикладная информатика) </h3>
+                    <div class="exp-meta">
+                        <span><i class="far fa-calendar-alt"></i> 2021 – 2025</span>
+                        <span><i class="fas fa-users"></i> Группа R3121</span>
+                    </div>
+                    <p style="color: #285577;">Специализация «Разработка программных решений на Python». Дипломная работа: «Оптимизация запросов к БД в Django ORM». Средний балл 4.85.</p>
+                    <span class="edu-badge" style="background: #2a5c7a;"><i class="fas fa-trophy"></i> Курс "Python Advanced" — отлично</span>
+                </div>
+            </div>
+            <!-- Стажировка / боевой опыт -->
+            <div class="exp-item">
+                <div class="exp-icon" style="background: #1f635c;">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="exp-content">
+                    <h3>Стажёр-разработчик (бэкенд) @ Digital Wave</h3>
+                    <div class="exp-meta">
+                        <span><i class="far fa-calendar-alt"></i> июнь 2024 – ноябрь 2024</span>
+                        <span><i class="fas fa-map-pin"></i> гибрид</span>
+                    </div>
+                    <p>Разработка API для внутреннего CRM. Рефакторинг легаси кода с Flask на FastAPI. Участие в code review, написание миграций. Стек: Python 3.11, SQLAlchemy, Pydantic, Docker.</p>
+                </div>
+            </div>
+            <!-- Доп. активность: наставник -->
+            <div class="exp-item">
+                <div class="exp-icon" style="background: #926c3e;">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="exp-content">
+                    <h3>Ассистент / наставник по Python</h3>
+                    <div class="exp-meta">
+                        <span><i class="far fa-calendar-alt"></i> 2023–2024</span>
+                        <span><i class="fas fa-users"></i> группа R3121, младшие курсы</span>
+                    </div>
+                    <p>Ведение практических семинаров по основам Python, ООП, Django. Проверка 20+ лабораторных работ, менторинг студентов.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- КЛЮЧЕВЫЕ ДОСТИЖЕНИЯ / С ЗНАЧКОМ ГРУППЫ -->
+        <div style="background: linear-gradient(105deg, #f2f9fc 0%, #ebf4fa 100%); border-radius: 2rem; padding: 2rem; margin-top: 2rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 1.4rem; font-weight: 700; display: flex; gap: 10px; align-items: center;">
+                        <i class="fas fa-medal" style="color: #ffb700;"></i>
+                        Достижения R3121
+                    </span>
+                    <ul style="margin-top: 1rem; list-style: none; max-width: 650px;">
+                        <li style="margin-bottom: 0.8rem; display: flex; gap: 0.8rem;"><i class="fas fa-check-circle" style="color: #306998;"></i> <span><strong>Победитель</strong> хакатона ML-SPb 2024 (трек Python-бэкенд) в составе команды группы R3121</span></li>
+                        <li style="margin-bottom: 0.8rem; display: flex; gap: 0.8rem;"><i class="fas fa-check-circle" style="color: #306998;"></i> <span>Сертификат <strong>Python Institute PCAP</strong> (с отличием) </span></li>
+                        <li style="display: flex; gap: 0.8rem;"><i class="fas fa-check-circle" style="color: #306998;"></i> <span>Доклад на студенческой конференции «Автоматизация тестирования в Django»</span></li>
+                    </ul>
+                </div>
+                <div style="background: white; border-radius: 2rem; padding: 1.2rem 1.6rem; text-align: center; box-shadow: 0 10px 18px rgba(0,0,0,0.04);">
+                    <i class="fab fa-python" style="font-size: 2.8rem; color: #306998;"></i>
+                    <div style="font-weight: 700; margin-top: 6px; font-size: 0.9rem;">группа R3121</div>
+                    <div style="font-family: 'JetBrains Mono'; background: #ffd343; padding: 0.2rem 0.8rem; border-radius: 100px; margin-top: 8px; font-weight: 600;">Анна П.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER / ДОП. ИНФО: ПОДЧЕРКНУТЬ ГРУППУ И ПИТОН -->
+        <hr>
+        <div class="footer-note">
+            <span style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-copyright" style="opacity: 0.6;"></i> 2025, Панфилова Анна, R3121
+                <span style="background: #102a41; color: white; padding: 2px 12px; border-radius: 30px; font-size: 0.7rem; margin-left: 5px;"><i class="fas fa-terminal"></i> Python-разработчик</span>
+            </span>
+            <span style="font-size: 0.9rem; background: #ffd343; padding: 0.3rem 1rem; border-radius: 60px; font-weight: 600;">
+                <i class="fab fa-python"></i> портфолио обновлено
+            </span>
+        </div>
+        <!-- дополнительная строчка с группой в самом низу -->
+        <div style="margin-top: 0.8rem; font-size: 0.8rem; color: #306998; font-family: 'JetBrains Mono'; display: flex; gap: 8px;">
+            <span>#R3121_annapy</span>
+            <span>#django</span>
+            <span>#fastapi</span>
+            <span>#pythondev</span>
+        </div>
+    </div>
+    <!-- небольшой скрипт для динамики нет нужды, все статично и красиво -->
 </body>
 </html>
